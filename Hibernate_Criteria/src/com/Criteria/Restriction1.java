@@ -1,0 +1,49 @@
+package com.Criteria;
+
+import java.util.Iterator;
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Restrictions;
+
+
+
+public class Restriction1 {
+
+	
+	public static void main(String[] args) {
+		
+		Configuration cfg = new Configuration()
+		        .configure("hibernate.cfg.xml")
+		        .addAnnotatedClass(Automobile.class);
+
+		SessionFactory sf = cfg.buildSessionFactory();
+		Session session = sf.openSession();
+		Criteria ct=session.createCriteria(Automobile.class);
+		ct.add(Restrictions.gt("price", 2000000.0));
+		ct.add(Restrictions.eq("brand", "mercedesbenz"));
+		List<Automobile>lt=ct.list();
+		for (Automobile automobile : lt) {
+			System.out.println(automobile);
+		}
+		
+//		Criteria ct=session.createCriteria(Automobile.class);
+//		ct.add(Restrictions.gt("price", 1000000.0));
+//		List<Automobile> lt=ct.list();
+//		for (Automobile a : lt) {
+//			System.out.println(a);
+//		}
+		
+		
+		session.beginTransaction().commit();
+		session.close();
+		sf.close();
+		
+
+	
+
+	}
+}
